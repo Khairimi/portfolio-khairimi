@@ -466,66 +466,143 @@ export const pendingStatsData: Metric[] = [
  * ─────────────────────────────────────────────────────────────
  */
 
+export const galleryCategories = [
+  "All",
+  "MPP & Leadership",
+  "JPK & Cultural",
+  "Innovation & Competitions",
+  "Certificates",
+] as const;
+
+export type GalleryCategory = Exclude<(typeof galleryCategories)[number], "All">;
+
 export type GalleryItem = {
-  slug: string; // image lives at /public/gallery/<slug>.jpg (lowercase extension)
+  slug: string;
+  /** File in /public/gallery (lowercase .jpg). Omit while a photo is pending — a designed fallback is shown. */
+  image?: string;
   alt: string; // descriptive alt text for screen readers
   title: string;
   caption: string;
+  role: string;
+  date: string;
+  /** Verified figures shown as tags on the card and in the receipt modal. */
+  metrics: string[];
   context: string;
   tag: string;
+  category: GalleryCategory;
   accent: "emerald" | "cyber" | "gold";
+  /** Bento size on the "All" view. */
+  size: "hero" | "tall" | "wide" | "std";
 };
 
 export const gallery: GalleryItem[] = [
   {
     slug: "mpp-manifesto",
+    image: "mpp-manifesto",
     alt: "MPP 2025/2026 election manifesto poster for Khairi Rahimi Khyril Norrahim, Fakulti Sains Komputer Matematik (FSKM), UiTM Kuala Terengganu, with the slogan “Berjuang Demi Mahasiswa”",
     title: "MPP Election Manifesto Poster",
     caption: "“Berjuang Demi Mahasiswa”",
+    role: "Calon MPP · Fakulti Sains Komputer Matematik",
+    date: "2025",
+    metrics: ["Sesi 2025/2026"],
     context:
-      "Campaign manifesto focused on bridging students and campus management, with student welfare as the core agenda.",
-    tag: "Election · 2025",
+      "Campaign manifesto focused on bridging students and campus management, with student welfare and campus vibrancy as the core agenda.",
+    tag: "Election",
+    category: "MPP & Leadership",
     accent: "emerald",
+    size: "hero",
   },
   {
     slug: "breakfast-boost",
+    image: "breakfast-boost",
     alt: "MPP Care Breakfast Boost booth at Dataran Lestari, UiTM Kuala Terengganu, with student representatives and free breakfast packs laid out on tables",
     title: "MPP Care — Breakfast Boost",
-    caption: "Free breakfast for the first 100 students · Dataran Lestari",
+    caption: "Free breakfast for the first 100 students",
+    role: "MPP Care · Dataran Lestari",
+    date: "30 Julai 2026",
+    metrics: ["First 100 students", "Terengganu Inc sponsored"],
     context:
       "MPP welfare programme at Dataran Lestari, UiTM Kuala Terengganu, sponsored by Terengganu Inc (per the programme poster).",
     tag: "Welfare",
+    category: "MPP & Leadership",
     accent: "gold",
+    size: "std",
   },
   {
     slug: "warna-warni-warisan",
+    image: "warna-warni-warisan",
     alt: "Khairi holding the Warna-Warni Warisan Terengganu festival banner for the 12–13 December 2025 event at UiTM Kuala Terengganu",
     title: "Warna-Warni Warisan Terengganu",
-    caption: "281 participants · 12–13 December 2025",
+    caption: "281 participants · 99% satisfaction",
+    role: "Ketua Program · JPK Kolej Kerawang",
+    date: "12–13 Disember 2025",
+    metrics: ["281 peserta", "99% kepuasan", "5 rakan luar", "Anugerah Kebudayaan Nominee"],
     context:
-      "JPK × MPP cultural programme. Coordinated the programme and prepared the closing-ceremony cuesheet. 281 is programme participation, not unique students reached.",
+      "JPK × MPP cultural programme with Noor Arfa Batik, Lembaga Muzium, Persatuan Wau, Persatuan Gasing and Extra Joss Malaysia. 281 is programme participation, not unique students reached.",
     tag: "Culture",
+    category: "JPK & Cultural",
     accent: "gold",
+    size: "tall",
   },
   {
     slug: "masmed-seminar",
+    image: "masmed-seminar",
     alt: "Student leaders at the MASMED Eastern Region digital product marketing seminar, with the presentation projected behind them",
-    title: "MASMED Eastern Region Seminar",
-    caption: "Digital Product Marketing · UiTM Kelantan",
+    title: "MASMED Eastern Region Seminar / MADANI Mega 2026",
+    caption: "Entrepreneurship seminars · MASMED × INSKEN",
+    role: "MPP Exco Keusahawanan",
+    date: "2026 · MADANI Mega 23 Jun 2026",
+    metrics: ["MASMED", "INSKEN"],
     context:
-      "MASMED Eastern Region digital product marketing seminar, attended through the MPP entrepreneurship portfolio.",
+      "MASMED Eastern Region digital product marketing seminar, alongside Seminar Usahawan MADANI Mega 2026 at DATC UiTM Shah Alam — both through the MPP entrepreneurship portfolio.",
     tag: "Entrepreneurship",
+    category: "MPP & Leadership",
     accent: "cyber",
+    size: "std",
   },
   {
-    slug: "welfare-walk",
-    alt: "MPP representatives with the “Lawatan Muhibah” banner during the non-resident student welfare visit at Kampus Kuala Terengganu",
-    title: "Lawatan Muhibah — Non-Resident Welfare Visit",
-    caption: "Student welfare · Kampus Kuala Terengganu",
+    slug: "pride-showcase-jury",
+    alt: "Certificate of appreciation: Jury at the PRIDE Showcase 12th Edition, organised by FSKM and MASMED UiTMCTKKT",
+    title: "Jury — PRIDE Showcase 12th Edition",
+    caption: "FSKM × MASMED UiTMCTKKT",
+    role: "Jury / Innovation Evaluator",
+    date: "4 Disember 2025",
+    metrics: ["Jury", "FSKM", "MASMED"],
+    context: "Evaluated student innovation projects at the 12th PRIDE Showcase, organised by FSKM and MASMED UiTMCTKKT.",
+    tag: "Certificate",
+    category: "Certificates",
+    accent: "cyber",
+    size: "std",
+  },
+  {
+    slug: "expo-vokasi-2026",
+    alt: "EXPO VOKASI 2026 International Finalist recognition for the Khazanah Pantun project",
+    title: "EXPO VOKASI 2026 — International Finalist",
+    caption: "Khazanah Pantun · Culture Care",
+    role: "Ketua Pasukan Culture Care",
+    date: "2026",
+    metrics: ["International Finalist", "Khazanah Pantun"],
     context:
-      "Welfare visit to non-resident students at Kampus Kuala Terengganu, carried out with URHP.",
-    tag: "Advocacy",
+      "International finalist at EXPO VOKASI 2026 with Khazanah Pantun, an AI-assisted Malay pantun repository built around Responsible AI.",
+    tag: "Competition",
+    category: "Innovation & Competitions",
+    accent: "gold",
+    size: "std",
+  },
+  {
+    slug: "power-bi-simplilearn",
+    alt: "Power BI for Beginners certificate from Simplilearn and Microsoft, certificate code 10982607",
+    title: "Power BI for Beginners — Simplilearn & Microsoft",
+    caption: "Data analytics & dashboards",
+    role: "Certified Learner",
+    date: "4 November 2026",
+    metrics: ["Code: 10982607", "Power BI"],
+    context:
+      "Certification covering data analytics, business data visualization and building interactive dashboards.",
+    tag: "Certificate",
+    category: "Certificates",
     accent: "emerald",
+    size: "wide",
   },
 ];
 
