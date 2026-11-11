@@ -2,21 +2,44 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Award, BookOpen, Gamepad2, GitMerge, Network, Smartphone } from "lucide-react";
+import {
+  ArrowUpRight,
+  Award,
+  BookOpen,
+  Gamepad2,
+  GitMerge,
+  Network,
+  Smartphone,
+  UtensilsCrossed,
+} from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { GithubIcon } from "@/components/ui/brand-icons";
-import { projects, type Project } from "@/lib/data";
+import { MetricTile } from "@/components/ui/metric";
+import { achievementsData, projectsData, type PortfolioEntry } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-type Filter = "all" | Project["category"];
+type Category = "mobile-ai" | "web-systems";
+type Accent = "emerald" | "cyber" | "gold";
+type Filter = "all" | Category;
 const filters: { value: Filter; label: string }[] = [
   { value: "all", label: "All" },
   { value: "mobile-ai", label: "Mobile & AI" },
   { value: "web-systems", label: "Web & Systems" },
 ];
+
+/** Presentation-only metadata, keyed by project id (content itself lives in lib/data.ts). */
+const meta: Record<string, { category: Category; accent: Accent; icon: React.ElementType }> = {
+  studypilot: { category: "mobile-ai", accent: "emerald", icon: Smartphone },
+  "khazanah-pantun": { category: "mobile-ai", accent: "gold", icon: BookOpen },
+  "community-skill-exchange": { category: "mobile-ai", accent: "cyber", icon: GitMerge },
+  "benteng-siber": { category: "web-systems", accent: "cyber", icon: Gamepad2 },
+  "food-ordering-system": { category: "web-systems", accent: "gold", icon: UtensilsCrossed },
+  "packet-tracer-lan": { category: "web-systems", accent: "emerald", icon: Network },
+};
+const fallbackMeta = { category: "web-systems" as Category, accent: "emerald" as Accent, icon: Smartphone };
 
 const accentText = { emerald: "text-emerald-soft", cyber: "text-cyber-soft", gold: "text-gold-soft" };
 const accentBorder = { emerald: "border-emerald/30 bg-emerald/10", cyber: "border-cyber/30 bg-cyber/10", gold: "border-gold/35 bg-gold/10" };
@@ -47,30 +70,17 @@ function PriorityViz() {
           <span className="w-7 text-right tabular-nums text-white">{x.s}</span>
         </div>
       ))}
-      <p className="pt-1 text-[10px] text-sand-dim">↳ sample view · every score comes with its reasons</p>
+      <p className="pt-1 text-[10px] text-sand-dim">↳ illustrative sample, not real data</p>
     </div>
   );
 }
 
-function PantunViz() {
+function PantunViz({ metrics }: { metrics: PortfolioEntry["metrics"] }) {
   return (
-    <div className="grid grid-cols-[auto_1fr] items-center gap-4">
-      <div>
-        <p className="font-mono text-3xl font-semibold tabular-nums text-gold-soft">19,137</p>
-        <p className="text-[11px] text-sand-dim">pantun · 15 books</p>
-      </div>
-      <div className="flex h-12 items-end gap-1">
-        {[40, 65, 30, 80, 55, 90, 45, 70, 35, 60, 85, 50, 75, 42, 66].map((h, i) => (
-          <motion.span
-            key={i}
-            initial={{ height: 0 }}
-            whileInView={{ height: `${h}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: i * 0.03 }}
-            className="flex-1 rounded-sm bg-gradient-to-t from-gold/30 to-gold-soft/80"
-          />
-        ))}
-      </div>
+    <div className="grid grid-cols-2 gap-3">
+      {metrics.slice(0, 4).map((m) => (
+        <MetricTile key={m.id} metric={m} tone="gold" className="sm:p-3" />
+      ))}
     </div>
   );
 }
@@ -84,7 +94,7 @@ function MatchViz() {
     [2, 0],
   ];
   return (
-    <svg viewBox="0 0 220 92" className="h-20 w-full">
+    <svg viewBox="0 0 220 92" className="h-20 w-full" role="img" aria-label="Illustration of stable matching between two sets of skills">
       {pairs.map(([a, b], i) => (
         <motion.path
           key={i}
@@ -118,90 +128,97 @@ function MatchViz() {
   );
 }
 
-const icons: Record<string, React.ElementType> = {
-  studypilot: Smartphone,
-  "khazanah-pantun": BookOpen,
-  "skill-exchange": GitMerge,
-  "benteng-siber": Gamepad2,
-  itt400: Network,
-};
-
-function Visual({ slug }: { slug: string }) {
-  if (slug === "studypilot") return <PriorityViz />;
-  if (slug === "khazanah-pantun") return <PantunViz />;
-  if (slug === "skill-exchange") return <MatchViz />;
+function Visual({ p }: { p: PortfolioEntry }) {
+  if (p.id === "studypilot") return <PriorityViz />;
+  if (p.id === "khazanah-pantun") return <PantunViz metrics={p.metrics} />;
+  if (p.id === "community-skill-exchange") return <MatchViz />;
   return null;
 }
 
-function ProjectCard({ p, wide }: { p: Project; wide: boolean }) {
-  const Icon = icons[p.slug] ?? Smartphone;
-  const hasViz = ["studypilot", "khazanah-pantun", "skill-exchange"].includes(p.slug);
+const hasViz = (p: PortfolioEntry) =>
+  ["studypilot", "khazanah-pantun", "community-skill-exchange"].includes(p.id);
+
+function ProjectCard({ p, wide }: { p: PortfolioEntry; wide: boolean }) {
+  const { category, accent, icon: Icon } = meta[p.id] ?? fallbackMeta;
+  const viz = hasViz(p);
+  const award = p.id === "khazanah-pantun" ? achievementsData[0] : undefined;
 
   return (
-    <SpotlightCard as="article" glow={p.accent} className="flex h-full flex-col p-6 sm:p-7">
+    <SpotlightCard as="article" glow={accent} className="flex h-full flex-col p-6 sm:p-7">
       <div className="flex items-start justify-between gap-3">
-        <span className={cn("grid h-10 w-10 place-items-center rounded-xl border", accentBorder[p.accent], accentText[p.accent])}>
+        <span className={cn("grid h-10 w-10 place-items-center rounded-xl border", accentBorder[accent], accentText[accent])}>
           <Icon className="h-5 w-5" />
         </span>
         <span className="font-mono text-[11px] text-sand-dim">
-          {p.category === "mobile-ai" ? "mobile · ai" : "web · systems"}
+          {category === "mobile-ai" ? "mobile · ai" : "web · systems"}
         </span>
       </div>
 
       <h3 className="mt-5 text-xl font-semibold tracking-tight text-white">{p.title}</h3>
-      <p className={cn("font-mono text-xs", accentText[p.accent])}>{p.subtitle}</p>
+      <p className={cn("font-mono text-xs", accentText[accent])}>{p.role}</p>
+      {p.period && <p className="mt-0.5 font-mono text-[11px] text-sand-dim">{p.period}</p>}
 
-      {p.badge && (
+      {award && (
         <div className="mt-4 flex items-start gap-2 rounded-lg border border-gold/30 bg-gold/[0.08] px-3 py-2 text-xs text-gold-soft">
-          <Award className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {p.badge}
+          <Award className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {award.title}
         </div>
       )}
 
-      <div className={cn("mt-4 grid gap-6", wide && hasViz && "md:grid-cols-[1.1fr_1fr]")}>
+      <div className={cn("mt-4 grid gap-6", wide && viz && "md:grid-cols-[1.1fr_1fr]")}>
         <div>
           <p className="text-sm leading-relaxed text-sand-muted">{p.description}</p>
-          <ul className="mt-4 space-y-1.5 text-sm">
-            {p.highlights.map((h) => (
-              <li key={h} className="flex gap-2 text-sand">
-                <span className={cn("mt-[3px] font-mono text-[10px]", accentText[p.accent])}>▸</span>
-                {h}
-              </li>
-            ))}
-          </ul>
+          {p.initiatives && (
+            <ul className="mt-4 space-y-1.5 text-sm">
+              {p.initiatives.map((h) => (
+                <li key={h} className="flex gap-2 text-sand">
+                  <span className={cn("mt-[3px] font-mono text-[10px]", accentText[accent])}>▸</span>
+                  {h}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        {hasViz && (
+        {viz && (
           <div className="rounded-xl border border-sand/[0.07] bg-ink/60 p-4">
-            <Visual slug={p.slug} />
+            <Visual p={p} />
           </div>
         )}
       </div>
 
       <div className="mt-5 flex flex-wrap gap-1.5">
-        {p.tech.map((t) => (
+        {(p.technologies ?? []).map((t) => (
           <Badge key={t}>{t}</Badge>
+        ))}
+        {p.badges.map((b) => (
+          <Badge key={b} tone={accent}>
+            {b}
+          </Badge>
         ))}
       </div>
 
       {p.links && p.links.length > 0 && (
         <div className="mt-auto flex flex-wrap gap-2 pt-6">
-          {p.links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              target="_blank"
-              rel="noreferrer"
-              className={cn(
-                "group/link inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs transition duration-300",
-                l.kind === "live"
-                  ? "border-emerald/40 bg-emerald/10 text-emerald-soft hover:border-emerald/70 hover:bg-emerald/20 hover:shadow-[0_0_18px_-2px_rgba(16,185,129,0.55)]"
-                  : "border-sand/15 text-sand-muted hover:border-sand/40 hover:text-white hover:shadow-[0_0_18px_-4px_rgba(231,220,200,0.45)]"
-              )}
-            >
-              {l.kind === "github" ? <GithubIcon className="h-3.5 w-3.5" /> : null}
-              {l.label}
-              <ArrowUpRight className="h-3 w-3 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
-            </a>
-          ))}
+          {p.links.map((l) => {
+            const isGithub = l.href.includes("github.com");
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className={cn(
+                  "group/link inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs transition duration-300",
+                  isGithub
+                    ? "border-sand/15 text-sand-muted hover:border-sand/40 hover:text-white hover:shadow-[0_0_18px_-4px_rgba(231,220,200,0.45)]"
+                    : "border-emerald/40 bg-emerald/10 text-emerald-soft hover:border-emerald/70 hover:bg-emerald/20 hover:shadow-[0_0_18px_-2px_rgba(16,185,129,0.55)]"
+                )}
+              >
+                {isGithub ? <GithubIcon className="h-3.5 w-3.5" /> : null}
+                {l.title}
+                <ArrowUpRight className="h-3 w-3 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+              </a>
+            );
+          })}
         </div>
       )}
     </SpotlightCard>
@@ -210,7 +227,8 @@ function ProjectCard({ p, wide }: { p: Project; wide: boolean }) {
 
 export function Projects() {
   const [filter, setFilter] = useState<Filter>("all");
-  const visible = projects.filter((p) => filter === "all" || p.category === filter);
+  const categoryOf = (p: PortfolioEntry) => (meta[p.id] ?? fallbackMeta).category;
+  const visible = projectsData.filter((p) => filter === "all" || categoryOf(p) === filter);
 
   return (
     <section id="projects" className="relative py-20 sm:py-28">
@@ -224,7 +242,7 @@ export function Projects() {
               Systems I&apos;ve <span className="text-cyber-soft">designed</span>, shipped &amp; defended.
             </>
           }
-          description="From explainable scoring in a study app to stable-matching algorithms and AI for Malay heritage — each project solves a problem real people raised."
+          description="From a study planner with explainable priorities to stable-matching algorithms and responsible AI for Malay heritage — each project starts from a problem real people raised."
         />
 
         <Tabs value={filter} onValueChange={(v) => setFilter(v as Filter)} className="mb-8">
@@ -240,7 +258,7 @@ export function Projects() {
                 )}
                 <span className="relative z-10">{f.label}</span>
                 <span className="relative z-10 ml-1.5 opacity-60">
-                  {f.value === "all" ? projects.length : projects.filter((p) => p.category === f.value).length}
+                  {f.value === "all" ? projectsData.length : projectsData.filter((p) => categoryOf(p) === f.value).length}
                 </span>
               </TabsTrigger>
             ))}
@@ -250,10 +268,10 @@ export function Projects() {
         <motion.div layout className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {visible.map((p) => {
-              const wide = p.slug === "studypilot";
+              const wide = p.id === "studypilot";
               return (
                 <motion.div
-                  key={p.slug}
+                  key={p.id}
                   layout
                   initial={{ opacity: 0, scale: 0.96, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}

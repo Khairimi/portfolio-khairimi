@@ -1,8 +1,17 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { asciiBanner, dobiSutera, profile, skills } from "@/lib/data";
+import {
+  achievementsData,
+  asciiBanner,
+  leadershipData,
+  pendingStatsData,
+  profileData,
+  skills,
+  statsData,
+  type Metric,
+} from "@/lib/data";
 
 type Line = { id: number; kind: "cmd" | "out"; node: ReactNode };
 
@@ -17,6 +26,37 @@ const Dim = ({ children }: { children: ReactNode }) => <span className="text-san
 function bar(pct: number, width = 20) {
   const filled = Math.round((pct / 100) * width);
   return "█".repeat(filled) + "░".repeat(width - filled);
+}
+
+const STAT_LABELS: Record<string, string> = {
+  "cultural-event-attendance": "warisan",
+  "pantun-top-3": "pantun top-3",
+  "pantun-test-set": "test-set",
+  "pantun-backend-tests": "backend",
+  fundraising: "fundraising",
+  "survey-response-rate": "survey-rate",
+};
+
+/** One terminal row per metric. A null value is "unavailable", never printed as 0. */
+function StatRow({ m, tone }: { m: Metric; tone: string }) {
+  const label = (STAT_LABELS[m.id] ?? m.id).padEnd(14);
+  if (m.value === null) {
+    return (
+      <p className="whitespace-pre">
+        <Key>{label}</Key>
+        <Dim>{"░".repeat(20)}</Dim> <Warn>Pending Verification</Warn>
+      </p>
+    );
+  }
+  const isPct = m.unit === "%";
+  return (
+    <p className="whitespace-pre">
+      <Key>{label}</Key>
+      {isPct ? <span className={tone}>{bar(m.value)}</span> : <Dim>{"·".repeat(20)}</Dim>}{" "}
+      {m.value}
+      {isPct ? "%" : ` ${m.unit}`}
+    </p>
+  );
 }
 
 function Banner() {
@@ -58,52 +98,46 @@ function run(cmd: string): ReactNode | "clear" {
     case "whoami":
       return (
         <p>
-          <Ok>{profile.handle}</Ok> <Dim>—</Dim> CS student · MPP · future tech consultant
+          <Ok>{profileData.handle}</Ok> <Dim>—</Dim> {profileData.role} · future tech consultant
         </p>
       );
     case "cat bio.txt":
       return (
         <div className="space-y-1">
           <p><Dim># bio.txt</Dim></p>
-          <p><Key>name     </Key> {profile.fullName}</p>
-          <p><Key>study    </Key> {profile.programme} ({profile.programmeCode})</p>
-          <p><Key>campus   </Key> {profile.institutionShort} · {profile.location}</p>
-          <p><Key>award    </Key> <Warn>★ {profile.award}</Warn></p>
-          <p><Key>role     </Key> MPP 2025/2026 — {profile.portfolios.join(" · ")}</p>
-          <p><Key>target   </Key> <Ok>{profile.target}</Ok></p>
-          <p className="pt-1 text-sand-muted">
-            &gt; I build mobile & web systems, read the data behind student problems, and carry it to the people who
-            can fix them.
-          </p>
+          <p><Key>name     </Key> {profileData.title}</p>
+          <p><Key>study    </Key> {profileData.programme} ({profileData.programmeCode})</p>
+          <p><Key>campus   </Key> {profileData.institutionShort} · {profileData.location}</p>
+          <p><Key>award    </Key> <Warn>★ {profileData.badges[2]}</Warn></p>
+          <p><Key>silver   </Key> <Warn>★ {achievementsData[0].title}</Warn></p>
+          <p><Key>role     </Key> MPP 2025/2026 — {leadershipData[0].role}</p>
+          <p><Key>interests</Key> <Ok>{profileData.interests.join(" · ")}</Ok></p>
+          <p className="pt-1 text-sand-muted">&gt; {profileData.description}</p>
         </div>
       );
     case "fetch mpp-stats": {
-      const pct = (dobiSutera.responses / dobiSutera.target) * 100;
+      const report = leadershipData.find((e) => e.id === "dobi-sutera")?.links?.[0];
+      const tones = ["text-emerald-soft", "text-gold-soft", "text-cyber-soft", "text-emerald-soft"];
       return (
         <div className="space-y-1">
-          <p><Dim>GET</Dim> /api/mpp/dobi-sutera <Ok>200 OK</Ok> <Dim>· 38ms</Dim></p>
-          <p className="whitespace-pre">
-            <Key>{"responses".padEnd(12)}</Key>
-            <Ok>{bar(pct)}</Ok> {dobiSutera.responses}/{dobiSutera.target}
+          <p><Dim># verified metrics · null = </Dim><Warn>Pending Verification</Warn></p>
+          {statsData.map((m, i) => (
+            <StatRow key={m.id} m={m} tone={tones[i % tones.length]} />
+          ))}
+          {pendingStatsData.map((m) => (
+            <StatRow key={m.id} m={m} tone="text-gold-soft" />
+          ))}
+          <p className="pt-1 text-sand-dim">
+            participation counts are per programme — not unique students.
           </p>
-          <p className="whitespace-pre">
-            <Key>{"hygiene".padEnd(12)}</Key>
-            <Warn>{bar(dobiSutera.hygieneFlagged)}</Warn> {dobiSutera.hygieneFlagged}% flagged
-          </p>
-          <p className="whitespace-pre">
-            <Key>{"siswi".padEnd(12)}</Key>
-            <span className="text-cyber-soft">{bar(dobiSutera.siswiShare)}</span> {dobiSutera.siswiShare}%
-          </p>
-          <p className="whitespace-pre">
-            <Key>{"breakfast".padEnd(12)}</Key>
-            <Ok>{bar(100)}</Ok> 100 packs
-          </p>
-          <p className="pt-1">
-            <Dim>report →</Dim>{" "}
-            <a href={dobiSutera.reportUrl} target="_blank" rel="noreferrer" className="text-emerald underline underline-offset-2">
-              dobi-sutera-mpp.vercel.app
-            </a>
-          </p>
+          {report && (
+            <p>
+              <Dim>report →</Dim>{" "}
+              <a href={report.href} target="_blank" rel="noreferrer" className="text-emerald underline underline-offset-2 transition hover:text-emerald-soft">
+                {report.href.replace(/^https?:\/\//, "")}
+              </a>
+            </p>
+          )}
         </div>
       );
     }
@@ -129,12 +163,12 @@ function run(cmd: string): ReactNode | "clear" {
           <pre className="whitespace-pre text-emerald-soft">{`╭──────────────────────────────────────╮
 │  CONTACT VERIFIED · READY TO COLLAB  │
 ╰──────────────────────────────────────╯`}</pre>
-          <p><Key>candidate </Key> {profile.fullName}</p>
-          <p><Key>seeking   </Key> <Ok>{profile.target}</Ok></p>
+          <p><Key>candidate </Key> {profileData.title}</p>
+          <p><Key>seeking   </Key> <Ok>{profileData.interests.slice(0, 2).join(" / ")}</Ok></p>
           <p>
             <Key>email     </Key>{" "}
-            <a href={`mailto:${profile.email}`} className="text-emerald underline underline-offset-2 transition hover:text-emerald-soft hover:drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]">
-              {profile.email}
+            <a href={`mailto:${profileData.email}`} className="text-emerald underline underline-offset-2 transition hover:text-emerald-soft hover:drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]">
+              {profileData.email}
             </a>
           </p>
           <p className="pt-1"><Warn>★</Warn> <Dim>exit code 0 · offer letter pending…</Dim></p>

@@ -4,13 +4,13 @@ import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Khairi Rahimi — Computer Science × Campus Leadership",
+  title: "Khairi Rahimi — Mobile Computing × Campus Leadership",
   description:
-    "Portfolio of Khairi Rahimi Khyril Norrahim — B.CS (Hons.) Mobile Computing at UiTM Kuala Terengganu, Dean's List 2025, MPP Sesi 2025/2026. Flutter & React developer, data-driven student advocate, aspiring Technology Consultant.",
+    "Portfolio of Khairi Rahimi Khyril Norrahim — Bachelor of Information Systems (Hons) Mobile Computing (CDCS270) at UiTM Kuala Terengganu, Dean's List 2025, MPP Sesi 2025/2026. Flutter developer, student leader, aspiring Technology Consultant.",
   keywords: ["Khairi Rahimi", "UiTM", "MPP", "Flutter", "Next.js", "Portfolio", "Mobile Computing", "Technology Consultant"],
   authors: [{ name: "Khairi Rahimi Khyril Norrahim" }],
   openGraph: {
-    title: "Khairi Rahimi — Bridging Computer Science & Campus Leadership",
+    title: "Khairi Rahimi — Bridging Mobile Computing & Campus Leadership",
     description: "Developer & student leader portfolio · UiTM Kuala Terengganu · MPP 2025/2026",
     type: "website",
     locale: "en_MY",

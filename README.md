@@ -14,11 +14,12 @@ npm run build    # production build (verified clean)
 2. In Vercel → **Add New → Project** → import the repo → **Deploy**. No settings or env vars needed.
 
 ## Edit content
-Everything lives in **`lib/data.ts`**: profile, Dobi Sutera numbers, projects, gallery captions, roadmap, skills.
+Everything lives in **`lib/data.ts`**: `profileData`, `projectMetrics`, `leadershipData`, `projectsData`, `achievementsData`, plus gallery captions, roadmap and skills.
 
-- **LinkedIn:** replace `profile.linkedin` with your real profile URL.
+- **Metrics:** `null` means unavailable and is shown as "Pending Verification", never as 0. Participation counts are per activity, not unique students.
+- **LinkedIn / GitHub:** `profileData.linkedin` and `profileData.github`.
 - **Photos:** see `public/gallery/README.md`.
-- **New project:** add an object to `projects`. The `category` decides which tab it appears under.
+- **New project:** add an entry to `projectsData`, and its tab/accent/icon to the `meta` map in `components/sections/projects.tsx`.
 
 ## Structure
 ```

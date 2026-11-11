@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, FileBarChart, Mail, MapPin, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Terminal } from "./terminal";
-import { profile } from "@/lib/data";
+import { profileData } from "@/lib/data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const item = {
@@ -44,7 +44,7 @@ export function Hero() {
             <span className="block text-sand/90 sm:inline">
               Bridging{" "}
               <span className="bg-gradient-to-r from-emerald via-emerald-soft to-cyber-soft bg-clip-text text-transparent">
-                Computer Science
+                Mobile Computing
               </span>{" "}
               &amp;{" "}
               <span className="relative text-gold-soft sm:whitespace-nowrap">
@@ -62,20 +62,21 @@ export function Hero() {
           </motion.h1>
 
           <motion.p variants={item} className="mt-7 max-w-xl text-pretty text-[17px] leading-relaxed text-sand-muted">
-            CS student specialising in <span className="text-sand">Mobile Computing</span>,{" "}
-            <span className="text-sand">Flutter / React app development</span> and{" "}
-            <span className="text-sand">data analytics</span> — and an elected voice for student welfare. I turn
-            campus problems into evidence, and evidence into working systems.
+            Information Systems student specialising in{" "}
+            <span className="text-sand">Mobile Computing</span>,{" "}
+            <span className="text-sand">Flutter app development</span> and{" "}
+            <span className="text-sand">Responsible AI</span> — and an elected MPP voice for student
+            entrepreneurship and welfare. I turn campus problems into evidence, and evidence into working systems.
           </motion.p>
 
           <motion.div variants={item} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-sand-dim">
             <span className="inline-flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-cyber-soft" /> {profile.institutionShort}
+              <MapPin className="h-3.5 w-3.5 text-cyber-soft" /> {profileData.institutionShort}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Award className="h-3.5 w-3.5 text-gold-soft" /> {profile.award}
+              <Award className="h-3.5 w-3.5 text-gold-soft" /> {profileData.badges[2]}
             </span>
-            <span>{profile.programmeCode}</span>
+            <span>{profileData.programmeCode}</span>
           </motion.div>
 
           <motion.div variants={item} className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -120,13 +121,12 @@ export function Hero() {
                 "Flutter",
                 "Next.js",
                 "Firebase",
-                "Data Analytics",
                 "Student Advocacy",
                 "Gale–Shapley",
                 "Project Coordination",
                 "Responsible AI",
                 "Cisco Networking",
-                "Exco Keusahawanan & Inovasi",
+                "Exco Keusahawanan",
               ].map((t) => (
                 <span key={t} className="flex items-center gap-10">
                   {t}

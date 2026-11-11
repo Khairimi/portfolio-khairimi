@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { profile } from "@/lib/data";
+import { profileData } from "@/lib/data";
 
 const links = [
   { href: "#leadership", label: "Leadership" },
@@ -38,7 +38,7 @@ export function Nav() {
             KR
           </span>
           <span className="hidden sm:inline">
-            {profile.handle}
+            {profileData.handle}
             <span className="text-sand-dim">.dev</span>
           </span>
         </a>
@@ -57,7 +57,7 @@ export function Nav() {
         </ul>
 
         <a
-          href={`mailto:${profile.email}`}
+          href={`mailto:${profileData.email}`}
           className="hidden rounded-lg border border-emerald/40 bg-emerald/10 px-3.5 py-1.5 font-mono text-xs text-emerald-soft transition hover:bg-emerald/20 md:inline-flex"
         >
           hire --consult
