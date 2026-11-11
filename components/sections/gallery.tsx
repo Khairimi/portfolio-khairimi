@@ -1,0 +1,161 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, ClipboardCheck, Coffee, Expand, Megaphone, Palette, Presentation } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/ui/reveal";
+import { gallery, type GalleryItem } from "@/lib/data";
+import { cn } from "@/lib/utils";
+
+const icons: Record<string, React.ElementType> = {
+  "mpp-manifesto": Megaphone,
+  "breakfast-boost": Coffee,
+  "warna-warni-warisan": Palette,
+  "masmed-seminar": Presentation,
+  "welfare-walk": ClipboardCheck,
+};
+
+const grad = {
+  emerald: "from-emerald/30 via-emerald-deep/10 to-ink-800",
+  cyber: "from-cyber/30 via-cyber-deep/10 to-ink-800",
+  gold: "from-gold/30 via-gold/5 to-ink-800",
+};
+const text = { emerald: "text-emerald-soft", cyber: "text-cyber-soft", gold: "text-gold-soft" };
+
+/**
+ * Shows a designed placeholder, and fades the real photo in on top
+ * once /public/gallery/<slug>.jpg exists. No config needed.
+ */
+function Photo({ item, large = false }: { item: GalleryItem; large?: boolean }) {
+  const [loaded, setLoaded] = useState(false);
+  const Icon = icons[item.slug] ?? Megaphone;
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className={cn("absolute inset-0 bg-gradient-to-br", grad[item.accent])} />
+      <div className="kerawang absolute inset-0 opacity-50" />
+      <div className="absolute inset-0 grid place-items-center">
+        <Icon className={cn(large ? "h-20 w-20" : "h-12 w-12", text[item.accent], "opacity-70")} strokeWidth={1.2} />
+      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`/gallery/${item.slug}.jpg`}
+        alt={item.title}
+        onLoad={() => setLoaded(true)}
+        onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = "none")}
+        className={cn(
+          "absolute inset-0 h-full w-full transition-all duration-700",
+          large ? "object-contain bg-ink" : "object-cover group-hover:scale-[1.04]",
+          loaded ? "opacity-100" : "opacity-0"
+        )}
+      />
+    </div>
+  );
+}
+
+export function Gallery() {
+  const [index, setIndex] = useState<number | null>(null);
+  const open = index !== null;
+  const current = index !== null ? gallery[index] : null;
+  const step = (d: number) => setIndex((i) => (i === null ? i : (i + d + gallery.length) % gallery.length));
+
+  return (
+    <section id="gallery" className="relative py-20 sm:py-28">
+      <div className="container">
+        <SectionHeading
+          index="03"
+          label="Evidence & Leadership Gallery"
+          title={
+            <>
+              Receipts, not <span className="text-gold-soft">résumé lines</span>.
+            </>
+          }
+          description="Every claim on this page has a moment behind it. Tap any frame for the source context."
+        />
+
+        <div className="grid auto-rows-[200px] grid-cols-2 gap-3 sm:auto-rows-[220px] sm:gap-4 lg:grid-cols-4">
+          {gallery.map((g, i) => {
+            const layout = [
+              "col-span-2 row-span-2 lg:col-span-2",
+              "col-span-1",
+              "col-span-1",
+              "col-span-1",
+              "col-span-1",
+            ][i];
+            return (
+              <Reveal key={g.slug} delay={i * 0.06} className={layout}>
+                <button
+                  onClick={() => setIndex(i)}
+                  className="group relative block h-full w-full overflow-hidden rounded-2xl border border-sand/10 text-left outline-none transition hover:border-sand/25"
+                  aria-label={`Open ${g.title}`}
+                >
+                  <Photo item={g} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
+                  <span className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-lg border border-sand/15 bg-ink/60 text-sand opacity-0 backdrop-blur transition group-hover:opacity-100">
+                    <Expand className="h-3.5 w-3.5" />
+                  </span>
+                  <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+                    <span className={cn("font-mono text-[10px] uppercase tracking-[0.18em]", text[g.accent])}>
+                      {String(i + 1).padStart(2, "0")} · {g.tag}
+                    </span>
+                    <p className={cn("mt-1 font-semibold leading-snug text-white", i === 0 ? "text-xl sm:text-2xl" : "text-sm sm:text-base")}>
+                      {g.title}
+                    </p>
+                    {i === 0 && <p className="mt-1 text-sm text-sand-muted">{g.caption}</p>}
+                  </div>
+                </button>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+
+      <Dialog open={open} onOpenChange={(o) => !o && setIndex(null)}>
+        {current && index !== null && (
+          <DialogContent
+            className="max-w-4xl"
+            onKeyDown={(e) => {
+              if (e.key === "ArrowRight") step(1);
+              if (e.key === "ArrowLeft") step(-1);
+            }}
+          >
+            <motion.div key={current.slug} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl">
+                <Photo item={current} large />
+              </div>
+              <div className="grid gap-5 p-6 sm:grid-cols-[1fr_auto] sm:items-end sm:p-8">
+                <div>
+                  <Badge tone={current.accent}>{current.tag}</Badge>
+                  <DialogTitle className="mt-3 text-2xl font-semibold text-white">{current.title}</DialogTitle>
+                  <p className={cn("mt-1 font-mono text-sm", text[current.accent])}>{current.caption}</p>
+                  <DialogDescription className="mt-4 max-w-2xl text-sand-muted">{current.context}</DialogDescription>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => step(-1)}
+                    className="grid h-10 w-10 place-items-center rounded-xl border border-sand/15 text-sand transition hover:border-emerald/50 hover:text-emerald"
+                    aria-label="Previous"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <span className="w-12 text-center font-mono text-xs text-sand-dim">
+                    {index + 1}/{gallery.length}
+                  </span>
+                  <button
+                    onClick={() => step(1)}
+                    className="grid h-10 w-10 place-items-center rounded-xl border border-sand/15 text-sand transition hover:border-emerald/50 hover:text-emerald"
+                    aria-label="Next"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </DialogContent>
+        )}
+      </Dialog>
+    </section>
+  );
+}
