@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, ClipboardCheck, Coffee, Expand, Megaphone, Palette, Presentation } from "lucide-react";
+import { ChevronLeft, ChevronRight, Expand } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
@@ -10,45 +11,19 @@ import { Reveal } from "@/components/ui/reveal";
 import { gallery, type GalleryItem } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-const icons: Record<string, React.ElementType> = {
-  "mpp-manifesto": Megaphone,
-  "breakfast-boost": Coffee,
-  "warna-warni-warisan": Palette,
-  "masmed-seminar": Presentation,
-  "welfare-walk": ClipboardCheck,
-};
-
-const grad = {
-  emerald: "from-emerald/30 via-emerald-deep/10 to-ink-800",
-  cyber: "from-cyber/30 via-cyber-deep/10 to-ink-800",
-  gold: "from-gold/30 via-gold/5 to-ink-800",
-};
 const text = { emerald: "text-emerald-soft", cyber: "text-cyber-soft", gold: "text-gold-soft" };
 
-/**
- * Shows a designed placeholder, and fades the real photo in on top
- * once /public/gallery/<slug>.jpg exists. No config needed.
- */
 function Photo({ item, large = false }: { item: GalleryItem; large?: boolean }) {
-  const [loaded, setLoaded] = useState(false);
-  const Icon = icons[item.slug] ?? Megaphone;
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      <div className={cn("absolute inset-0 bg-gradient-to-br", grad[item.accent])} />
-      <div className="kerawang absolute inset-0 opacity-50" />
-      <div className="absolute inset-0 grid place-items-center">
-        <Icon className={cn(large ? "h-20 w-20" : "h-12 w-12", text[item.accent], "opacity-70")} strokeWidth={1.2} />
-      </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+    <div className="absolute inset-0 overflow-hidden bg-ink-800">
+      <Image
         src={`/gallery/${item.slug}.jpg`}
-        alt={item.title}
-        onLoad={() => setLoaded(true)}
-        onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = "none")}
+        alt={item.alt}
+        fill
+        sizes={large ? "(min-width: 1024px) 896px, 100vw" : "(min-width: 1024px) 50vw, 100vw"}
         className={cn(
-          "absolute inset-0 h-full w-full transition-all duration-700",
-          large ? "object-contain bg-ink" : "object-cover group-hover:scale-[1.04]",
-          loaded ? "opacity-100" : "opacity-0"
+          "transition-transform duration-700",
+          large ? "object-contain" : "object-cover object-top group-hover:scale-[1.04]"
         )}
       />
     </div>

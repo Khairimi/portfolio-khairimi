@@ -6,7 +6,7 @@ import { asciiBanner, dobiSutera, profile, skills } from "@/lib/data";
 
 type Line = { id: number; kind: "cmd" | "out"; node: ReactNode };
 
-const COMMANDS = ["cat bio.txt", "fetch mpp-stats", "list tech-stack", "whoami", "help", "clear"] as const;
+const COMMANDS = ["cat bio.txt", "fetch mpp-stats", "list tech-stack", "whoami", "help", "clear", "sudo hire"] as const;
 const QUICK = ["cat bio.txt", "fetch mpp-stats", "list tech-stack", "clear"] as const;
 
 const Key = ({ children }: { children: ReactNode }) => <span className="text-cyber-soft">{children}</span>;
@@ -119,6 +119,25 @@ function run(cmd: string): ReactNode | "clear" {
               <span className="text-sand">{s.items.join(", ")}</span>
             </p>
           ))}
+        </div>
+      );
+    case "sudo hire":
+      return (
+        <div className="space-y-0.5">
+          <p><Dim>[sudo] password for recruiter:</Dim> ********</p>
+          <p><Ok>✔</Ok> <Dim>identity verified</Dim> <Dim>·</Dim> <Ok>access granted</Ok></p>
+          <pre className="whitespace-pre text-emerald-soft">{`╭──────────────────────────────────────╮
+│  CONTACT VERIFIED · READY TO COLLAB  │
+╰──────────────────────────────────────╯`}</pre>
+          <p><Key>candidate </Key> {profile.fullName}</p>
+          <p><Key>seeking   </Key> <Ok>{profile.target}</Ok></p>
+          <p>
+            <Key>email     </Key>{" "}
+            <a href={`mailto:${profile.email}`} className="text-emerald underline underline-offset-2 transition hover:text-emerald-soft hover:drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]">
+              {profile.email}
+            </a>
+          </p>
+          <p className="pt-1"><Warn>★</Warn> <Dim>exit code 0 · offer letter pending…</Dim></p>
         </div>
       );
     case "clear":

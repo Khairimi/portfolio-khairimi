@@ -32,7 +32,18 @@ export const dobiSutera = {
   target: 200,
   hygieneFlagged: 87,
   siswiShare: 34.5,
+  /** Benchmark for the representation bar: an even split between siswa and siswi. */
+  parityBenchmark: 50,
 };
+
+/** Status badges shown on the leadership cards. */
+export const leadershipBadges = {
+  breakfast: [
+    { label: "Completed Inisiatif", tone: "emerald" },
+    { label: "Terengganu Inc Sponsored", tone: "gold" },
+  ],
+  warna: [{ label: "Completed Inisiatif", tone: "emerald" }],
+} as const;
 
 export type ProjectCategory = "mobile-ai" | "web-systems";
 
@@ -125,7 +136,8 @@ export const projects: Project[] = [
 ];
 
 export type GalleryItem = {
-  slug: string; // drop a photo at /public/gallery/<slug>.jpg and it appears automatically
+  slug: string; // image lives at /public/gallery/<slug>.jpg (lowercase extension)
+  alt: string; // descriptive alt text for screen readers
   title: string;
   caption: string;
   context: string;
@@ -136,6 +148,7 @@ export type GalleryItem = {
 export const gallery: GalleryItem[] = [
   {
     slug: "mpp-manifesto",
+    alt: "MPP 2025/2026 election manifesto poster for Khairi Rahimi Khyril Norrahim, Fakulti Sains Komputer Matematik (FSKM), UiTM Kuala Terengganu, with the slogan “Berjuang Demi Mahasiswa”",
     title: "MPP Election Manifesto Poster",
     caption: "“Berjuang Demi Mahasiswa”",
     context:
@@ -145,6 +158,7 @@ export const gallery: GalleryItem[] = [
   },
   {
     slug: "breakfast-boost",
+    alt: "MPP Care Breakfast Boost booth at Dataran Lestari, UiTM Kuala Terengganu, with student representatives and free breakfast packs laid out on tables",
     title: "MPP Care — Breakfast Boost",
     caption: "100 free breakfast packs · Dataran Lestari",
     context:
@@ -154,6 +168,7 @@ export const gallery: GalleryItem[] = [
   },
   {
     slug: "warna-warni-warisan",
+    alt: "Khairi holding the Warna-Warni Warisan Terengganu festival banner for the 12–13 December 2025 event at UiTM Kuala Terengganu",
     title: "Warna-Warni Warisan Terengganu",
     caption: "Cultural festival poster & closing management",
     context:
@@ -163,6 +178,7 @@ export const gallery: GalleryItem[] = [
   },
   {
     slug: "masmed-seminar",
+    alt: "Student leaders at the MASMED Eastern Region digital product marketing seminar, with the presentation projected behind them",
     title: "MASMED Eastern Region Seminar",
     caption: "Digital Product Marketing · UiTM Kelantan",
     context:
@@ -172,6 +188,7 @@ export const gallery: GalleryItem[] = [
   },
   {
     slug: "welfare-walk",
+    alt: "MPP representatives with the “Lawatan Muhibah” banner during the non-resident student welfare visit at Kampus Kuala Terengganu",
     title: "Non-Resident Welfare Walk & Facility Inspection",
     caption: "Facility checks · Kampus Kuala Terengganu",
     context:

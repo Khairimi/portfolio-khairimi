@@ -191,10 +191,10 @@ function ProjectCard({ p, wide }: { p: Project; wide: boolean }) {
               target="_blank"
               rel="noreferrer"
               className={cn(
-                "group/link inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs transition",
+                "group/link inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs transition duration-300",
                 l.kind === "live"
-                  ? "border-emerald/40 bg-emerald/10 text-emerald-soft hover:bg-emerald/20"
-                  : "border-sand/15 text-sand-muted hover:border-sand/30 hover:text-white"
+                  ? "border-emerald/40 bg-emerald/10 text-emerald-soft hover:border-emerald/70 hover:bg-emerald/20 hover:shadow-[0_0_18px_-2px_rgba(16,185,129,0.55)]"
+                  : "border-sand/15 text-sand-muted hover:border-sand/40 hover:text-white hover:shadow-[0_0_18px_-4px_rgba(231,220,200,0.45)]"
               )}
             >
               {l.kind === "github" ? <GithubIcon className="h-3.5 w-3.5" /> : null}

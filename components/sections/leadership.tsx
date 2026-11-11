@@ -18,7 +18,7 @@ import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
-import { dobiSutera, profile } from "@/lib/data";
+import { dobiSutera, leadershipBadges, profile } from "@/lib/data";
 
 function IconChip({ children, tone }: { children: React.ReactNode; tone: "emerald" | "cyber" | "gold" }) {
   const map = {
@@ -72,11 +72,40 @@ export function Leadership() {
 
               <div className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
                 {[
-                  { to: dobiSutera.responses, suffix: "+", label: "Responses gathered", tone: "text-emerald" },
-                  { to: dobiSutera.hygieneFlagged, suffix: "%", label: "Flagged hygiene issues", tone: "text-gold-soft" },
-                  { to: dobiSutera.siswiShare, suffix: "%", decimals: 1, label: "Siswi representation", tone: "text-cyber-soft" },
-                ].map((s) => (
-                  <div key={s.label} className="rounded-xl border border-sand/[0.07] bg-ink/50 p-3 sm:p-5">
+                  {
+                    to: dobiSutera.responses,
+                    suffix: "+",
+                    label: "Responses gathered",
+                    tone: "text-emerald",
+                    bar: "bg-emerald",
+                    fill: pct,
+                    note: `${pct.toFixed(0)}% of ${dobiSutera.target} target`,
+                  },
+                  {
+                    to: dobiSutera.hygieneFlagged,
+                    suffix: "%",
+                    label: "Flagged hygiene issues",
+                    tone: "text-gold-soft",
+                    bar: "bg-gold-soft",
+                    fill: dobiSutera.hygieneFlagged,
+                    note: "of respondents",
+                  },
+                  {
+                    to: dobiSutera.siswiShare,
+                    suffix: "%",
+                    decimals: 1,
+                    label: "Siswi representation",
+                    tone: "text-cyber-soft",
+                    bar: "bg-cyber-soft",
+                    fill: dobiSutera.siswiShare,
+                    marker: dobiSutera.parityBenchmark,
+                    note: `${dobiSutera.parityBenchmark}% parity mark`,
+                  },
+                ].map((s, i) => (
+                  <div
+                    key={s.label}
+                    className="rounded-xl border border-sand/[0.07] bg-ink/50 p-3 transition duration-300 hover:border-sand/20 hover:bg-ink/70 sm:p-5"
+                  >
                     <AnimatedCounter
                       to={s.to}
                       suffix={s.suffix}
@@ -84,6 +113,19 @@ export function Leadership() {
                       className={`block font-mono text-2xl font-semibold tabular-nums tracking-tight sm:text-4xl ${s.tone}`}
                     />
                     <span className="mt-1.5 block text-[11px] leading-snug text-sand-dim sm:text-xs">{s.label}</span>
+                    <div className="relative mt-3 h-1.5 overflow-hidden rounded-full bg-ink">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${s.fill}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.12 }}
+                        className={`h-full rounded-full shadow-[0_0_10px_currentColor] ${s.bar} ${s.tone}`}
+                      />
+                      {s.marker !== undefined && (
+                        <span className="absolute top-0 h-full w-px bg-sand/60" style={{ left: `${s.marker}%` }} />
+                      )}
+                    </div>
+                    <span className="mt-1.5 block font-mono text-[10px] text-sand-dim">{s.note}</span>
                   </div>
                 ))}
               </div>
@@ -102,7 +144,7 @@ export function Leadership() {
                     whileInView={{ width: `${pct}%` }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                    className="relative h-full rounded-full bg-gradient-to-r from-emerald-deep via-emerald to-emerald-soft"
+                    className="relative h-full rounded-full bg-gradient-to-r from-emerald-deep via-emerald to-emerald-soft shadow-[0_0_16px_rgba(16,185,129,0.55)]"
                   >
                     <span className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent_0_6px,rgba(255,255,255,.12)_6px_12px)]" />
                   </motion.div>
@@ -152,6 +194,13 @@ export function Leadership() {
                 <p className="mt-3 text-sm text-sand-muted">
                   Distributed at Dataran Lestari with sponsorship from <span className="text-sand">Terengganu Inc</span>.
                 </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {leadershipBadges.breakfast.map((b) => (
+                    <Badge key={b.label} tone={b.tone} glow>
+                      <span className="h-1.5 w-1.5 rounded-full bg-current" /> {b.label}
+                    </Badge>
+                  ))}
+                </div>
               </div>
 
               <ul className="mt-5 space-y-4">
@@ -185,7 +234,14 @@ export function Leadership() {
               </div>
               <div className="relative mt-6 grid gap-6 sm:grid-cols-2">
                 <div>
-                  <Badge tone="gold">Director / Coordinator</Badge>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge tone="gold">Director / Coordinator</Badge>
+                    {leadershipBadges.warna.map((b) => (
+                      <Badge key={b.label} tone={b.tone} glow>
+                        <span className="h-1.5 w-1.5 rounded-full bg-current" /> {b.label}
+                      </Badge>
+                    ))}
+                  </div>
                   <h3 className="mt-3 text-lg font-semibold text-white">Warna-Warni Warisan Terengganu</h3>
                   <ul className="mt-3 space-y-1.5 text-sm text-sand-muted">
                     {["Pantai Timur forum", "Traditional cultural games", "Malam Tokoh Warisan"].map((x) => (
