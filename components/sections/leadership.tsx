@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, Award, Droplets, GraduationCap, Landmark, Palette, Store, Users } from "lucide-react";
+import { ArrowUpRight, Award, BarChart3, Crown, Droplets, GraduationCap, Landmark, Palette, Users } from "lucide-react";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
@@ -58,6 +58,51 @@ export function Leadership() {
           description="As an elected MPP representative, I treat student issues like a product problem: gather the evidence, report it clearly, then bring it to the people who can act."
         />
 
+        {/* Featured primary role — Exco Keusahawanan */}
+        <Reveal className="mb-4">
+          <div className="neon-border relative overflow-hidden p-6 sm:p-8 lg:p-10">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-16 h-64 w-64 rounded-full bg-emerald/10 blur-3xl" />
+            <div className="relative grid gap-8 lg:grid-cols-[1.25fr_1fr]">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge tone="emerald" glow>
+                    <Crown className="h-3 w-3" /> Primary role
+                  </Badge>
+                  <Badge tone="cyber">{mpp.period}</Badge>
+                </div>
+                <h3 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                  {mpp.role}{" "}
+                  <span className="bg-gradient-to-r from-emerald-soft to-cyan-300 bg-clip-text text-transparent">
+                    MPP Sesi 2025/2026
+                  </span>
+                </h3>
+                <p className="mt-3 max-w-2xl text-sand-muted">{mpp.description}</p>
+                <div className="mt-5 flex flex-wrap gap-1.5">
+                  {mpp.badges.map((b) => (
+                    <Badge key={b} tone="emerald">
+                      {b}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                <ul className="grid gap-2 text-sm text-sand">
+                  {(mpp.initiatives ?? []).map((x) => (
+                    <li
+                      key={x}
+                      className="flex gap-2 rounded-lg border border-sand/[0.07] bg-ink/50 px-3 py-2 transition duration-300 hover:border-emerald/40 hover:shadow-[0_0_18px_-6px_rgba(16,185,129,0.6)]"
+                    >
+                      <span className="mt-[2px] text-emerald-soft">▸</span> {x}
+                    </li>
+                  ))}
+                </ul>
+                <MetricTile metric={projectMetrics.fundraising} tone="emerald" />
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
         <div className="grid gap-4 lg:grid-cols-3">
           {/* A — Dobi Sutera */}
           <Reveal className="lg:col-span-2">
@@ -111,27 +156,8 @@ export function Leadership() {
             </SpotlightCard>
           </Reveal>
 
-          {/* B — MPP mandate */}
-          <Reveal delay={0.1}>
-            <SpotlightCard glow="gold" className="flex h-full flex-col p-6 sm:p-7">
-              <div className="flex items-center gap-3">
-                <IconChip tone="gold">
-                  <Store className="h-5 w-5" />
-                </IconChip>
-                <p className="eyebrow">Entrepreneurship · MPP</p>
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-white">{mpp.role}</h3>
-              <p className="font-mono text-xs text-gold-soft">{mpp.title}</p>
-              <p className="mt-3 text-sm text-sand-muted">{mpp.description}</p>
-              <Bullets items={mpp.initiatives ?? []} />
-              <div className="mt-auto pt-5">
-                <MetricTile metric={projectMetrics.fundraising} tone="gold" />
-              </div>
-            </SpotlightCard>
-          </Reveal>
-
           {/* C — Warna-Warni Warisan + Kerawang Town */}
-          <Reveal delay={0.05} className="lg:col-span-2">
+          <Reveal delay={0.05} className="lg:col-span-3">
             <SpotlightCard glow="cyber" className="relative h-full overflow-hidden p-6 sm:p-7">
               <div className="kerawang pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-60 [mask-image:linear-gradient(90deg,transparent,black)]" />
               <div className="relative flex items-center gap-3">
@@ -196,16 +222,30 @@ export function Leadership() {
         </div>
 
         {/* Recognition */}
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {achievementsData.map((a, i) => (
             <Reveal key={a.id} delay={i * 0.06}>
               <SpotlightCard glow="gold" className="h-full p-5 sm:p-6">
                 <div className="flex items-center gap-3">
-                  <IconChip tone="gold">{a.id === "deans-list-2025" ? <GraduationCap className="h-5 w-5" /> : <Award className="h-5 w-5" />}</IconChip>
+                  <IconChip tone="gold">{a.id === "deans-list-2025" ? (
+                      <GraduationCap className="h-5 w-5" />
+                    ) : a.id === "power-bi-simplilearn-2026" ? (
+                      <BarChart3 className="h-5 w-5" />
+                    ) : (
+                      <Award className="h-5 w-5" />
+                    )}</IconChip>
                   <p className="eyebrow">{a.period}</p>
                 </div>
                 <h3 className="mt-4 font-semibold text-white">{a.title}</h3>
+                <p className="font-mono text-[11px] text-gold-soft">{a.role}</p>
                 <p className="mt-1 text-sm text-sand-muted">{a.description}</p>
+                {a.notes
+                  ?.filter((n) => n.startsWith("Certificate Code"))
+                  .map((n) => (
+                    <p key={n} className="mt-2 font-mono text-[11px] text-sand-dim">
+                      {n}
+                    </p>
+                  ))}
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {a.badges.map((b) => (
                     <Badge key={b} tone="gold">

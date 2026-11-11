@@ -222,7 +222,7 @@ export function Projects() {
                 {filter === f.value && (
                   <motion.span
                     layoutId="tab-pill"
-                    className="absolute inset-0 -z-0 rounded-lg bg-emerald"
+                    className="absolute inset-0 -z-0 rounded-full bg-gradient-to-r from-emerald to-emerald-soft shadow-[0_0_20px_rgba(16,185,129,0.65)]"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                   />
                 )}

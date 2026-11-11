@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, FileBarChart, Mail, MapPin, Award } from "lucide-react";
+import { ArrowUpRight, FileBarChart, Mail, MapPin, Award, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Terminal } from "./terminal";
-import { profileData } from "@/lib/data";
+import { leadershipData, profileData } from "@/lib/data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const item = {
@@ -23,15 +23,28 @@ export function Hero() {
         <motion.div initial="hidden" animate="show" transition={{ staggerChildren: 0.09 }} className="min-w-0">
           <motion.div
             variants={item}
-            className="mb-7 inline-flex max-w-full items-center gap-2.5 rounded-full border border-emerald/25 bg-emerald/[0.07] py-1.5 pl-2 pr-4 text-[12px] text-sand sm:text-[13px]"
+            className="neon-border mb-4 inline-flex max-w-full items-center gap-3 rounded-full py-2 pl-2.5 pr-5"
+          >
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald/15 text-emerald-soft shadow-[0_0_14px_rgba(16,185,129,0.6)]">
+              <Crown className="h-3.5 w-3.5" />
+            </span>
+            <span className="truncate font-mono text-[12px] sm:text-[13px]">
+              <span className="font-semibold text-white">{leadershipData[0].role}</span>{" "}
+              <span className="bg-gradient-to-r from-emerald-soft to-cyan-300 bg-clip-text text-transparent">
+                MPP Sesi 2025/2026
+              </span>
+            </span>
+          </motion.div>
+
+          <motion.div
+            variants={item}
+            className="mb-7 flex w-fit max-w-full items-center gap-2.5 rounded-full border border-emerald/25 bg-emerald/[0.07] py-1.5 pl-2 pr-4 text-[12px] text-sand sm:text-[13px]"
           >
             <span className="relative grid h-5 w-5 shrink-0 place-items-center">
               <span className="h-2 w-2 animate-pulseDot rounded-full bg-emerald" />
             </span>
             <span className="truncate">
               Open for IT Consulting & Project Coordination
-              <span className="mx-2 text-sand-dim">|</span>
-              <span className="text-emerald-soft">MPP Sesi 2025/2026</span>
             </span>
           </motion.div>
 

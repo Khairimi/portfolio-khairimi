@@ -1,16 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Cloud, Globe, Smartphone, Target, Wrench } from "lucide-react";
+import { BarChart3, Check, Cpu, Smartphone, Target, Users } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { Reveal } from "@/components/ui/reveal";
 import { roadmap, skills, type Milestone } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-const skillIcons = { mobile: Smartphone, web: Globe, cloud: Cloud, tools: Wrench };
-const skillGlow = { mobile: "emerald", web: "cyber", cloud: "gold", tools: "emerald" } as const;
-const skillText = { mobile: "text-emerald-soft", web: "text-cyber-soft", cloud: "text-gold-soft", tools: "text-sand" };
+const skillIcons = { mobile: Smartphone, data: BarChart3, leadership: Users, systems: Cpu };
+const skillGlow = { mobile: "emerald", data: "cyber", leadership: "gold", systems: "emerald" } as const;
+const skillText = { mobile: "text-emerald-soft", data: "text-cyber-soft", leadership: "text-gold-soft", systems: "text-emerald-soft" };
 
 function Node({ status }: { status: Milestone["status"] }) {
   if (status === "done")
@@ -114,7 +114,7 @@ export function Roadmap() {
                     {s.items.map((it) => (
                       <span
                         key={it}
-                        className="rounded-md border border-sand/10 bg-ink/60 px-2 py-1 font-mono text-[11px] text-sand-muted transition hover:border-sand/30 hover:text-white"
+                        className="rounded-md border border-sand/10 bg-ink/60 px-2 py-1 font-mono text-[11px] text-sand-muted transition duration-300 hover:border-emerald/50 hover:text-emerald-soft hover:shadow-[0_0_14px_-3px_rgba(16,185,129,0.7)]"
                       >
                         {it}
                       </span>

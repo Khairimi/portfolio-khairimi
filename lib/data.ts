@@ -40,6 +40,8 @@ export const profileData = {
     "IT Project Coordination",
     "Mobile Application Development",
     "Responsible AI",
+    "Power BI",
+    "Data Visualization",
   ],
   badges: ["MPP 2025/2026", "Mobile Computing", "Dean's List 2025"],
   // Site-level identity & contact (used by nav, hero, footer, terminal)
@@ -51,6 +53,9 @@ export const profileData = {
   email: "Khairi.rahimi2112@gmail.com",
   github: "https://github.com/Khairimi",
   linkedin: "https://www.linkedin.com/in/khairi-rahimi-87a420315",
+  phone: "0149361720",
+  whatsapp: "https://wa.me/60149361720",
+  instagram: "https://www.instagram.com/kayrimi_?mdxt=eWNqYjRyYmt1Z25r&utm_source=qr",
 };
 
 export const projectMetrics = {
@@ -341,17 +346,13 @@ export const projectsData: PortfolioEntry[] = [
 export const achievementsData: PortfolioEntry[] = [
   {
     id: "expo-vokasi-2026",
-    title: "EXPO VOKASI 2026 — Silver",
+    title: "EXPO VOKASI 2026 — International Finalist",
     role: "Ketua Pasukan Culture Care",
     period: "2026",
     description:
-      "Pencapaian antarabangsa menerusi projek Khazanah Pantun.",
+      "Pencapaian finalis antarabangsa menerusi projek Khazanah Pantun.",
     metrics: [],
-    badges: ["Silver", "International", "Khazanah Pantun"],
-    notes: [
-      "Mengikut maklumat terkini dalam permintaan ini.",
-      "Rekod terdahulu menyatakan finalis antarabangsa; butiran kategori pingat belum tersedia.",
-    ],
+    badges: ["Finalist", "International", "Khazanah Pantun"],
   },
   {
     id: "national-silver-2026",
@@ -380,6 +381,17 @@ export const achievementsData: PortfolioEntry[] = [
       },
     ],
     badges: ["Academic Excellence", "Dean's List"],
+  },
+  {
+    id: "power-bi-simplilearn-2026",
+    title: "Power BI for Beginners — Simplilearn & Microsoft",
+    role: "Certified Learner",
+    period: "4 November 2026",
+    description:
+      "Pengiktirafan kemahiran analitik data, visualisasi data perniagaan, dan pembuatan papan pemuka (dashboard) interaktif.",
+    metrics: [],
+    badges: ["Power BI", "Data Analytics", "Microsoft", "Simplilearn"],
+    notes: ["Certificate Code: 10982607"],
   },
 ];
 
@@ -513,11 +525,33 @@ export const roadmap: Milestone[] = [
   },
 ];
 
-export const skills: { group: string; icon: "mobile" | "web" | "cloud" | "tools"; items: string[] }[] = [
-  { group: "Mobile App Development", icon: "mobile", items: ["Flutter", "Dart", "Kotlin", "Java"] },
-  { group: "Web & Frontend", icon: "web", items: ["React", "Next.js", "Tailwind CSS"] },
-  { group: "Backend & Cloud", icon: "cloud", items: ["Firebase", "PHP", "Laravel", "Python"] },
-  { group: "Tools", icon: "tools", items: ["Git", "VS Code", "Cisco Packet Tracer"] },
+export type SkillPillar = {
+  group: string;
+  icon: "mobile" | "data" | "leadership" | "systems";
+  items: string[];
+};
+
+export const skills: SkillPillar[] = [
+  {
+    group: "Mobile Computing & App Development",
+    icon: "mobile",
+    items: ["Flutter", "Dart", "Firebase", "Android"],
+  },
+  {
+    group: "Data Analytics & Business Intelligence",
+    icon: "data",
+    items: ["Power BI", "Data Visualization", "Semantic Search", "Theme Classification"],
+  },
+  {
+    group: "Executive Leadership & Event Coordination",
+    icon: "leadership",
+    items: ["MPP Exco Keusahawanan", "MASMED", "JPK"],
+  },
+  {
+    group: "Systems Engineering & AI Integration",
+    icon: "systems",
+    items: ["Gale-Shapley Algorithm", "Responsible AI", "Network Packet Analysis"],
+  },
 ];
 
 export const asciiBanner = [

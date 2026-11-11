@@ -109,7 +109,7 @@ function run(cmd: string): ReactNode | "clear" {
           <p><Key>study    </Key> {profileData.programme} ({profileData.programmeCode})</p>
           <p><Key>campus   </Key> {profileData.institutionShort} · {profileData.location}</p>
           <p><Key>award    </Key> <Warn>★ {profileData.badges[2]}</Warn></p>
-          <p><Key>silver   </Key> <Warn>★ {achievementsData[0].title}</Warn></p>
+          <p><Key>award    </Key> <Warn>★ {achievementsData[0].title}</Warn></p>
           <p><Key>role     </Key> MPP 2025/2026 — {leadershipData[0].role}</p>
           <p><Key>interests</Key> <Ok>{profileData.interests.join(" · ")}</Ok></p>
           <p className="pt-1 text-sand-muted">&gt; {profileData.description}</p>
@@ -169,6 +169,12 @@ function run(cmd: string): ReactNode | "clear" {
             <Key>email     </Key>{" "}
             <a href={`mailto:${profileData.email}`} className="text-emerald underline underline-offset-2 transition hover:text-emerald-soft hover:drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]">
               {profileData.email}
+            </a>
+          </p>
+          <p>
+            <Key>whatsapp  </Key>{" "}
+            <a href={profileData.whatsapp} target="_blank" rel="noreferrer" className="text-emerald underline underline-offset-2 transition hover:text-emerald-soft hover:drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]">
+              {profileData.phone}
             </a>
           </p>
           <p className="pt-1"><Warn>★</Warn> <Dim>exit code 0 · offer letter pending…</Dim></p>

@@ -1,8 +1,8 @@
 ﻿"use client";
 
 import { useState } from "react";
-import { ArrowUpRight, Check, Copy, Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/ui/brand-icons";
+import { ArrowUpRight, Check, Copy, Mail, MessageCircle } from "lucide-react";
+import { GithubIcon, InstagramIcon, LinkedinIcon } from "@/components/ui/brand-icons";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { profileData } from "@/lib/data";
@@ -25,7 +25,7 @@ export function Footer() {
       <div className="pointer-events-none absolute -bottom-40 left-1/2 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-emerald/10 blur-[120px]" />
 
       <div className="container relative">
-        <Reveal className="glass rounded-3xl p-8 sm:p-12 lg:p-16">
+        <Reveal className="neon-border p-8 sm:p-12 lg:p-16">
           <p className="eyebrow flex items-center gap-3">
             <span className="text-emerald">05</span>
             <span className="h-px w-8 bg-sand/20" />
@@ -58,6 +58,20 @@ export function Footer() {
               <a href={profileData.linkedin} target="_blank" rel="noreferrer">
                 <LinkedinIcon className="h-4 w-4 text-cyber-soft" />
                 LinkedIn
+                <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
+              </a>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <a href={profileData.whatsapp} target="_blank" rel="noreferrer" aria-label={`WhatsApp ${profileData.phone}`}>
+                <MessageCircle className="h-4 w-4 text-emerald-soft" />
+                WhatsApp
+                <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
+              </a>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <a href={profileData.instagram} target="_blank" rel="noreferrer">
+                <InstagramIcon className="h-4 w-4 text-gold-soft" />
+                Instagram
                 <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
               </a>
             </Button>
