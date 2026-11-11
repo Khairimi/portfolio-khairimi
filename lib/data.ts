@@ -20,9 +20,8 @@ export const profile = {
   target: "Technology Consultant / IT Project Coordinator",
   motto: "Meneraju Aspirasi, Membina Kecemerlangan",
   email: "Khairi.rahimi2112@gmail.com",
-  github: "https://www.linkedin.com/in/khairi-rahimi-87a420315?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
-  // TODO: replace with your exact LinkedIn profile URL, e.g. https://www.linkedin.com/in/your-handle
-  linkedin: "https://www.linkedin.com/search/results/all/?keywords=Khairi%20Rahimi%20UiTM",
+  github: "https://github.com/Khairimi",
+  linkedin: "https://www.linkedin.com/in/khairi-rahimi-87a420315",
   location: "Kuala Terengganu, Malaysia",
 };
 

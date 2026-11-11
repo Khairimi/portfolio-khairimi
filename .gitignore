@@ -6,3 +6,12 @@ out
 next-env.d.ts
 .env*.local
 .DS_Store
+
+# raw photo/video sources — keep only optimised showcase JPGs in the repo
+public/gallery/*
+!public/gallery/README.md
+!public/gallery/mpp-manifesto.jpg
+!public/gallery/breakfast-boost.jpg
+!public/gallery/warna-warni-warisan.jpg
+!public/gallery/welfare-walk.jpg
+!public/gallery/masmed-seminar.jpg
