@@ -14,6 +14,12 @@ const tones = {
 
 export type MetricTone = keyof typeof tones;
 
+const glowCls = {
+  emerald: "border-emerald/40 bg-emerald/[0.06] shadow-[0_0_28px_-8px_rgba(16,185,129,0.6)] hover:border-emerald/70 hover:shadow-[0_0_36px_-6px_rgba(16,185,129,0.8)]",
+  cyber: "border-cyber/40 bg-cyber/[0.06] shadow-[0_0_28px_-8px_rgba(59,130,246,0.6)] hover:border-cyber/70 hover:shadow-[0_0_36px_-6px_rgba(59,130,246,0.8)]",
+  gold: "border-gold/45 bg-gold/[0.06] shadow-[0_0_28px_-8px_rgba(217,119,6,0.6)] hover:border-gold/75 hover:shadow-[0_0_36px_-6px_rgba(217,119,6,0.8)]",
+};
+
 /** Number of decimals needed to display the value as given (0.45 → 2, 79 → 0). */
 function decimalsOf(n: number) {
   const s = String(n);
@@ -27,10 +33,13 @@ function decimalsOf(n: number) {
 export function MetricTile({
   metric,
   tone = "emerald",
+  glow = false,
   className,
 }: {
   metric: Metric;
   tone?: MetricTone;
+  /** Neon highlight card (used for headline figures). */
+  glow?: boolean;
   className?: string;
 }) {
   const t = tones[tone];
@@ -42,6 +51,7 @@ export function MetricTile({
       title={metric.description}
       className={cn(
         "rounded-xl border border-sand/[0.07] bg-ink/50 p-3 transition duration-300 hover:border-sand/20 hover:bg-ink/70 sm:p-5",
+        glow && glowCls[tone],
         className
       )}
     >

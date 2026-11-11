@@ -43,7 +43,7 @@ export const profileData = {
     "Power BI",
     "Data Visualization",
   ],
-  badges: ["MPP 2025/2026", "Mobile Computing", "Dean's List 2025"],
+  badges: ["MPP 2025/2026", "Mobile Computing", "Dean's List 2025", "JPK Exco Korporat", "PMDS"],
   // Site-level identity & contact (used by nav, hero, footer, terminal)
   name: "Khairi Rahimi",
   handle: "khairimi",
@@ -55,7 +55,7 @@ export const profileData = {
   linkedin: "https://www.linkedin.com/in/khairi-rahimi-87a420315",
   phone: "0149361720",
   whatsapp: "https://wa.me/60149361720",
-  instagram: "https://www.instagram.com/kayrimi_?mdxt=eWNqYjRyYmt1Z25r&utm_source=qr",
+  instagram: "https://www.instagram.com/kayrimi_",
 };
 
 export const projectMetrics = {
@@ -66,6 +66,21 @@ export const projectMetrics = {
     unit: "peserta",
     description:
       "Jumlah penyertaan program pada 12–13 Disember 2025; bukan jumlah pelajar unik yang menerima impak sepanjang penggal MPP.",
+  },
+  participantSatisfaction: {
+    id: "participant-satisfaction",
+    title: "Kepuasan Peserta",
+    value: 99,
+    unit: "%",
+    description: "Keputusan penilaian peserta Warna-Warni Warisan Terengganu (WWWT).",
+  },
+  externalCollaborators: {
+    id: "external-collaborators",
+    title: "Rakan Kolaborasi Luar",
+    value: 5,
+    unit: "rakan",
+    description:
+      "Noor Arfa Batik, Lembaga Muzium, Persatuan Wau, Persatuan Gasing dan Extra Joss Malaysia.",
   },
   pantunTop3: {
     id: "pantun-top-3",
@@ -139,15 +154,30 @@ export const leadershipData: PortfolioEntry[] = [
     badges: ["MPP", "Keusahawanan", "Student Representation"],
   },
   {
-    id: "jpk",
-    title: "Jawatankuasa Perwakilan Kolej",
-    role: "Ahli JPK",
+    id: "jpk-exco-korporat",
+    title: "Jawatankuasa Perwakilan Kolej (JPK) Kolej Kerawang",
+    role: "Exco Korporat (Sesi 2024/2025 & 2025/2026)",
+    period: "2024 — 2026",
+    description:
+      "Mengetuai hubungan korporat, jalinan kolaborasi luar, pengurusan pasar malam Laluan Malam Kerawang (~15 vendor/minggu), serta mengendalikan program kebudayaan flagship.",
+    initiatives: [
+      "Ketua Program Warna-Warni Warisan Terengganu (281 peserta, 5 kolaborasi luar, dicalonkan Anugerah Kebudayaan UiTMCTKKT)",
+      "Pengarah Laluan Malam Kerawang (Pasar malam mingguan Kolej Kerawang)",
+      "Pengacara Majlis (Emcee) & AJK Siar Raya Hi-Tea Apresiasi JPK",
+      "Penyelarasan bersama Noor Arfa Batik, Persatuan Wau, Persatuan Gasing, Lembaga Muzium & Extra Joss Malaysia",
+    ],
+    metrics: [projectMetrics.culturalEventAttendance],
+    badges: ["JPK 24/25", "JPK 25/26", "Exco Korporat", "Ketua Program", "Anugerah Kebudayaan Nominee"],
+  },
+  {
+    id: "pmds",
+    title: "Program Pembangunan Kepimpinan Student Leaders (PMDS)",
+    role: "Student Leader / Participant",
     period: null,
     description:
-      "Pengalaman kepimpinan kolej sebelum menyertai MPP, melibatkan penyelarasan program dan kebajikan pelajar.",
+      "Penyertaan dalam program pembangunan kepimpinan untuk pemimpin pelajar (Pemimpin Minggu Destini Siswa).",
     metrics: [],
-    badges: ["JPK", "Campus Leadership", "Student Welfare"],
-    notes: ["Jawatan khusus dan tempoh perkhidmatan belum dinyatakan."],
+    badges: ["PMDS", "Leadership Development", "Student Leaders"],
   },
   {
     id: "class-representative",
@@ -162,7 +192,7 @@ export const leadershipData: PortfolioEntry[] = [
   {
     id: "warna-warni-warisan",
     title: "Warna-Warni Warisan Terengganu",
-    role: "Penyelarasan Program & Penyediaan Cuesheet Penutup",
+    role: "Ketua Program (termasuk Penyediaan Cuesheet Penutup)",
     period: "12–13 Disember 2025",
     description:
       "Program JPK dengan kerjasama MPP yang memperkenalkan seni, permainan dan makanan tradisional melalui aktiviti budaya, rekreasi dan persembahan.",
@@ -393,11 +423,31 @@ export const achievementsData: PortfolioEntry[] = [
     badges: ["Power BI", "Data Analytics", "Microsoft", "Simplilearn"],
     notes: ["Certificate Code: 10982607"],
   },
+  {
+    id: "pride-showcase-12-jury",
+    title: "Jury — PRIDE Showcase 12th Edition",
+    role: "Innovation Evaluator",
+    period: "4 Disember 2025",
+    description: "Menilai projek inovasi pelajar di PRIDE Showcase ke-12, anjuran FSKM & MASMED UiTMCTKKT.",
+    metrics: [],
+    badges: ["Jury", "FSKM", "MASMED", "Innovation Evaluator"],
+  },
+  {
+    id: "madani-mega-2026",
+    title: "Seminar Usahawan MADANI Mega 2026",
+    role: "Peserta",
+    period: "23 Jun 2026",
+    description: "Seminar keusahawanan di DATC UiTM Shah Alam, anjuran MASMED dan INSKEN.",
+    metrics: [],
+    badges: ["MASMED", "INSKEN", "Entrepreneurship Summit"],
+  },
 ];
 
 // Impak berangka yang sesuai dipaparkan sebagai kad portfolio.
 export const statsData: Metric[] = [
   projectMetrics.culturalEventAttendance,
+  projectMetrics.participantSatisfaction,
+  projectMetrics.externalCollaborators,
   projectMetrics.pantunTop3,
   projectMetrics.pantunTestSet,
   projectMetrics.pantunBackendTests,
@@ -545,7 +595,7 @@ export const skills: SkillPillar[] = [
   {
     group: "Executive Leadership & Event Coordination",
     icon: "leadership",
-    items: ["MPP Exco Keusahawanan", "MASMED", "JPK"],
+    items: ["MPP Exco Keusahawanan", "JPK Exco Korporat", "MASMED", "PMDS"],
   },
   {
     group: "Systems Engineering & AI Integration",

@@ -30,6 +30,8 @@ function bar(pct: number, width = 20) {
 
 const STAT_LABELS: Record<string, string> = {
   "cultural-event-attendance": "warisan",
+  "participant-satisfaction": "kepuasan",
+  "external-collaborators": "kolaborasi",
   "pantun-top-3": "pantun top-3",
   "pantun-test-set": "test-set",
   "pantun-backend-tests": "backend",
@@ -117,7 +119,7 @@ function run(cmd: string): ReactNode | "clear" {
       );
     case "fetch mpp-stats": {
       const report = leadershipData.find((e) => e.id === "dobi-sutera")?.links?.[0];
-      const tones = ["text-emerald-soft", "text-gold-soft", "text-cyber-soft", "text-emerald-soft"];
+      const tones = ["text-emerald-soft", "text-gold-soft", "text-cyber-soft", "text-emerald-soft", "text-gold-soft", "text-cyber-soft"];
       return (
         <div className="space-y-1">
           <p><Dim># verified metrics · null = </Dim><Warn>Pending Verification</Warn></p>

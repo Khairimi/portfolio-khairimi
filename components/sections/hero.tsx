@@ -36,6 +36,17 @@ export function Hero() {
             </span>
           </motion.div>
 
+          <motion.p
+            variants={item}
+            className="mb-4 ml-2 flex max-w-full flex-wrap items-center gap-x-2 font-mono text-[11px] text-sand-dim sm:text-xs"
+          >
+            <span className="text-cyber-soft">JPK Kolej Kerawang</span>
+            <span>Exco Korporat</span>
+            <span className="text-emerald-soft">→</span>
+            <span className="text-emerald-soft">MPP</span>
+            <span>Exco Keusahawanan</span>
+          </motion.p>
+
           <motion.div
             variants={item}
             className="mb-7 flex w-fit max-w-full items-center gap-2.5 rounded-full border border-emerald/25 bg-emerald/[0.07] py-1.5 pl-2 pr-4 text-[12px] text-sand sm:text-[13px]"
