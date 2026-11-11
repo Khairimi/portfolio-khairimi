@@ -46,35 +46,6 @@ const accentBorder = { emerald: "border-emerald/30 bg-emerald/10", cyber: "borde
 
 /* ── Tiny bespoke visuals per project ─────────────────────── */
 
-function PriorityViz() {
-  const tasks = [
-    { t: "CSC661 report", s: 92 },
-    { t: "Lab 4 quiz", s: 71 },
-    { t: "FYP proposal", s: 58 },
-    { t: "Read ch. 7", s: 24 },
-  ];
-  return (
-    <div className="space-y-2.5 font-mono text-[11px]">
-      {tasks.map((x, i) => (
-        <div key={x.t} className="flex items-center gap-3">
-          <span className="w-24 truncate text-sand-muted sm:w-28">{x.t}</span>
-          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink">
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: `${x.s}%` }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.1 * i, ease: [0.16, 1, 0.3, 1] }}
-              className={cn("h-full rounded-full", x.s > 80 ? "bg-emerald" : x.s > 50 ? "bg-gold" : "bg-sand-dim")}
-            />
-          </div>
-          <span className="w-7 text-right tabular-nums text-white">{x.s}</span>
-        </div>
-      ))}
-      <p className="pt-1 text-[10px] text-sand-dim">↳ illustrative sample, not real data</p>
-    </div>
-  );
-}
-
 function PantunViz({ metrics }: { metrics: PortfolioEntry["metrics"] }) {
   return (
     <div className="grid grid-cols-2 gap-3">
@@ -129,16 +100,15 @@ function MatchViz() {
 }
 
 function Visual({ p }: { p: PortfolioEntry }) {
-  if (p.id === "studypilot") return <PriorityViz />;
   if (p.id === "khazanah-pantun") return <PantunViz metrics={p.metrics} />;
   if (p.id === "community-skill-exchange") return <MatchViz />;
   return null;
 }
 
 const hasViz = (p: PortfolioEntry) =>
-  ["studypilot", "khazanah-pantun", "community-skill-exchange"].includes(p.id);
+  ["khazanah-pantun", "community-skill-exchange"].includes(p.id);
 
-function ProjectCard({ p, wide }: { p: PortfolioEntry; wide: boolean }) {
+function ProjectCard({ p }: { p: PortfolioEntry }) {
   const { category, accent, icon: Icon } = meta[p.id] ?? fallbackMeta;
   const viz = hasViz(p);
   const award = p.id === "khazanah-pantun" ? achievementsData[0] : undefined;
@@ -164,7 +134,7 @@ function ProjectCard({ p, wide }: { p: PortfolioEntry; wide: boolean }) {
         </div>
       )}
 
-      <div className={cn("mt-4 grid gap-6", wide && viz && "md:grid-cols-[1.1fr_1fr]")}>
+      <div className={cn("mt-4 grid gap-6", viz && "md:grid-cols-[1.1fr_1fr] lg:grid-cols-1")}>
         <div>
           <p className="text-sm leading-relaxed text-sand-muted">{p.description}</p>
           {p.initiatives && (
@@ -268,7 +238,6 @@ export function Projects() {
         <motion.div layout className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {visible.map((p) => {
-              const wide = p.id === "studypilot";
               return (
                 <motion.div
                   key={p.id}
@@ -277,9 +246,8 @@ export function Projects() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className={cn(wide && "md:col-span-2")}
                 >
-                  <ProjectCard p={p} wide={wide} />
+                  <ProjectCard p={p} />
                 </motion.div>
               );
             })}
